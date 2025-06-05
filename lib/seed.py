@@ -8,11 +8,7 @@ from sqlalchemy.orm import sessionmaker
 
 from models import Game, Review
 
-if __name__ == '__main__':
-    engine = create_engine('sqlite:///one_to_many.db')
-    Session = sessionmaker(bind=engine)
-    session = Session()
-
+def seed_database(session):
     session.query(Game).delete()
     session.query(Review).delete()
 
@@ -49,7 +45,13 @@ if __name__ == '__main__':
             )
 
             reviews.append(review)
-    
+
     session.bulk_save_objects(reviews)
     session.commit()
+
+if __name__ == '__main__':
+    engine = create_engine('sqlite:///one_to_many.db')
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    seed_database(session)
     session.close()
